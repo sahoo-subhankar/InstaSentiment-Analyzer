@@ -15,9 +15,8 @@ const App = () => {
 
         try {
             setLoading(true);
-            // alert("Connection established with server")
             // API endpoint for fetching user score
-            const response = await axios.get(`http://localhost:8000/api/get_user_score/${username}/`);
+            const { response } = await axios.get(`http://127.0.0.1:8000/api/get_user_score/${username}`);
 
             // Check if the request was successful
             if (response.status === 200) {
@@ -39,9 +38,8 @@ const App = () => {
 
         try {
             setLoading(true);
-            // alert("Connection established with server")
             // API endpoint for fetching user comments
-            const response = await axios.get(`http://localhost:8000/api/get_user_comments/${username}/`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/get_user_comments/${username}`);
 
             // Check if the request was successful
             if (response.status === 200) {

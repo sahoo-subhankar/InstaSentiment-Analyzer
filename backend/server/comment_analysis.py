@@ -14,7 +14,6 @@ try:
 except (LookupError, nltk.exceptions.LazyCorpusLoader):
     nltk.download("stopwords")
 
-# Load NLTK data locally
 nltk.data.path.append("C:\\Users\\sahoo\\AppData\\Roaming\\nltk_data")
 stop_words = set(stopwords.words("english"))
 
@@ -35,6 +34,4 @@ def analyze_comment(comment):
 
     # It calculates a score by counting the occurrences of words from `bad_words` in the filtered words
     score = sum(1 for word in filtered_words if word in bad_words)
-
-    # Returning the no of bad words in the filtered words
     return score

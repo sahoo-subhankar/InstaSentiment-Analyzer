@@ -8,6 +8,7 @@ from .comment_analysis import analyze_comment
 
 def fetch_instagram_comments(username):
     L = instaloader.Instaloader()
+
     try:
         profile = instaloader.Profile.from_username(L.context, username)
 
@@ -23,6 +24,7 @@ def fetch_instagram_comments(username):
     except Exception as e:
         print(f"Error fetching comments for {username}: {str(e)}")
         return []
+
 
 @api_view(["GET"])
 def get_user_score(request, username):
@@ -58,11 +60,13 @@ def get_user_score(request, username):
     return Response({"message": "Score calculated successfully", "score": score})
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_user_comments(request, username):
     # Fetch all comments for the specified username
     user_comments = UserComment.objects.filter(user__username=username)
 
     # Use a serializer to transform the QuerySet into JSON
     serializer = CommentDetailSerializer(user_comments, many=True)
-    return Response({'message': 'Comments fetched successfully', 'comments': serializer.data})
+    return Response(
+        {"message": "Comments fetched successfully", "comments": serializer.data}
+    )
