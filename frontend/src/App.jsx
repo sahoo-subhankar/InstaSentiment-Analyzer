@@ -4,39 +4,54 @@ import axios from 'axios';
 const App = () => {
     const [username, setUsername] = useState('');
     const [score, setScore] = useState(null);
-    const [comment, setComment] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleFetchScore = async () => {
         if (username === '') {
             alert('Please enter a valid username');
-        } else {
-            try {
-                // Make an API request to fetch the score
-                const response = await axios.get(`api/get_user_score/${username}`);
-
-                // Check if the request was successful
-                if (response.status === 200) {
-                    setScore(response.data.score);
-                }
-            } catch (error) {
-                alert('Error fetching score. Check username and try again');
-                console.error('Error fetching score:', error);
-            }
+            return;
         }
-    };
 
-    const handleComments = async () => {
         try {
-            // Make an API request to fetch the score
-            const response = await axios.get(`api/get_user_comments/${username}`);
+            setLoading(true);
+
+            // Your API endpoint for fetching user score
+            const response = await axios.get(`http://localhost:8000/api/get_user_score/${username}/`);
 
             // Check if the request was successful
             if (response.status === 200) {
-                setComment(response.data.comment);
+                setScore(response.data.score);
             }
         } catch (error) {
             alert('Error fetching score. Check username and try again');
             console.error('Error fetching score:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleFetchComments = async () => {
+        if (username === '') {
+            alert('Please enter a valid username');
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            // Your API endpoint for fetching user comments
+            const response = await axios.get(`http://localhost:8000/api/get_user_comments/${username}/`);
+
+            // Check if the request was successful
+            if (response.status === 200) {
+                setComments(response.data.comment);
+            }
+        } catch (error) {
+            alert('Error fetching comments. Check username and try again');
+            console.error('Error fetching comments:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -59,21 +74,36 @@ const App = () => {
                     onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
+
+            {loading && <p>Loading...</p>}
+
             {score !== null && (
                 <div style={{ margin: '20px' }}>
-                    <p>Score of the {username}: {score}</p>
+                    <p>Score of {username}: {score}</p>
                 </div>
             )}
+
             <div style={{ margin: '20px' }}>
-                <button onClick={handleFetchScore}>Show Score</button>
+                <button onClick={handleFetchScore} disabled={loading}>
+                    Show Score
+                </button>
             </div>
-            {score !== null && (
+
+            {comments.length > 0 && (
                 <div style={{ margin: '20px' }}>
-                    <p>Comments by {username}: {comment}</p>
+                    <p>Comments by {username}:</p>
+                    <ul>
+                        {comments.map((comment, index) => (
+                            <li key={index}>{comment}</li>
+                        ))}
+                    </ul>
                 </div>
             )}
+
             <div style={{ margin: '20px' }}>
-                <button onClick={handleComments}>Show Comments</button>
+                <button onClick={handleFetchComments} disabled={loading}>
+                    Show Comments
+                </button>
             </div>
         </div>
     );
