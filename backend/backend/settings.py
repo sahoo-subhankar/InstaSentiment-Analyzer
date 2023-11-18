@@ -27,12 +27,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     
-    # External Apps
+    # Apps added by me
     'rest_framework',
     'debug_toolbar',
     'corsheaders',
-    
-    # Internal Apps
     'server',
 ]
 
