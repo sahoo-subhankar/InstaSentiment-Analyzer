@@ -37,7 +37,7 @@ def get_user_score(request, username):
     # Return the calculated score
     return Response({'message': 'Score calculated successfully', 'score': score})
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def get_user_comments(request, username):
     # Fetch all comments for the specified username
     user_comments = UserComment.objects.filter(user__username=username)
