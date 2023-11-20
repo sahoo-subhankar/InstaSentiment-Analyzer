@@ -14,12 +14,9 @@ const HomePage = () => {
             <div style={{ margin: "20px" }}>
                 <Link to="/instagram">Instagram</Link>
             </div>
-            {/* <div style={{ margin: "20px" }}>
+            <div style={{ margin: "20px" }}>
                 <Link to="/facebook">Facebook</Link>
             </div>
-            <div style={{ margin: "20px" }}>
-                <Link to="/twitter">Twitter</Link>
-            </div> */}
         </div>
     );
 };

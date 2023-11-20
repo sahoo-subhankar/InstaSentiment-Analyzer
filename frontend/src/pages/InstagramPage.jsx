@@ -4,6 +4,7 @@ import axios from 'axios';
 const InstagramPage = () => {
     const [username, setUsername] = useState('');
     const [score, setScore] = useState(null);
+    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleFetchScore = async () => {
@@ -18,10 +19,10 @@ const InstagramPage = () => {
 
             if (response.status === 200) {
                 setScore(response.data.score);
+                setMessage(response.data.message);
             }
         } catch (error) {
             alert('Error fetching score. Check username and try again');
-            console.error('Error fetching score:', error);
         } finally {
             setLoading(false);
         }
@@ -44,14 +45,20 @@ const InstagramPage = () => {
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    autoComplete="off"/>
+                    autoComplete="off" />
             </div>
 
             {loading && <p>Loading...</p>}
 
+            {score !== null && message !== '' && (
+                <div style={{ margin: '20px' }}>
+                    <p>{message}</p>
+                </div>
+            )}
+
             {score !== null && (
                 <div style={{ margin: '20px' }}>
-                    <p>Score of {username}: {score}</p>
+                    <p>Score of {username} is: {score}</p>
                 </div>
             )}
 

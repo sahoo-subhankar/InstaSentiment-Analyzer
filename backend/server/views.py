@@ -6,10 +6,11 @@ from rest_framework.response import Response
 from .comment_analysis import analyze_comment
 from .models import UserProfile
 
+
 @api_view(["GET"])
 def get_user_score_instagram(request, username):
     # Run the instaloader command
-    instaloader_command = f'instaloader --comments --filename-pattern "{{shortcode}}_{{date_utc}}_UTC" --no-videos --no-video-thumbnails --no-pictures --no-metadata-json --no-compress-json --no-profile-pic --login=sahoo__subha --dirname-pattern "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instaloader Files\\{{profile}}" profile {username}'
+    instaloader_command = f'instaloader --comments --filename-pattern "{{shortcode}}_{{date_utc}}_UTC" --no-videos --no-video-thumbnails --no-pictures --no-metadata-json --no-compress-json --no-profile-pic --login=sahoo__subha --dirname-pattern "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instagram Scraped Files\\{{profile}}" profile {username}'
 
     try:
         # Run the command using subprocess
@@ -24,16 +25,26 @@ def get_user_score_instagram(request, username):
 
     # Specify the folder path with the dynamic username
     folder_path = os.path.join(
-        "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instaloader Files",
+        "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instagram Scraped Files",
         username,
     )
 
     # Read text files (.txt)
     for filename in os.listdir(folder_path):
         if filename.endswith(".txt"):
-            with open(os.path.join(folder_path, filename), "r") as file:
-                text = file.read()
-                comments_data.append({"text": text})
+            with open(
+                os.path.join(folder_path, filename), "r", encoding="utf-8"
+            ) as file:
+                try:
+                    text = file.read()
+                    comments_data.append({"text": text})
+                except UnicodeDecodeError as e:
+                    return Response(
+                        {
+                            "message": f"Error decoding file {filename}: {e}",
+                            "score": 0.0,
+                        }
+                    )
 
     # Read JSON files (.json)
     for filename in os.listdir(folder_path):
