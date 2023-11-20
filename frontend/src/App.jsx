@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import InstagramPage from "./pages/InstagramPage";
 // import FacebookPage from "./pages/FacebookPage";
 // import TwitterPage from "./pages/TwitterPage";
-import HomePage from "./pages/HomePage";
 
 const App = () => {
     return (
