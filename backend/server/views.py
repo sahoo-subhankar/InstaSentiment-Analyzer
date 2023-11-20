@@ -1,72 +1,45 @@
-import instaloader
+import os
+import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import UserProfile, UserComment
-from .serializers import CommentDetailSerializer
 from .comment_analysis import analyze_comment
-
-
-def fetch_instagram_comments(username):
-    L = instaloader.Instaloader()
-
-    try:
-        profile = instaloader.Profile.from_username(L.context, username)
-
-        comments_data = []
-        for post in profile.get_posts():
-            comments_data.extend(
-                [
-                    {"text": comment.text, "username": comment.owner_username}
-                    for comment in post.get_comments()
-                ]
-            )
-        return comments_data
-    except Exception as e:
-        print(f"Error fetching comments for {username}: {str(e)}")
-        return []
+from .models import UserProfile
 
 
 @api_view(["GET"])
-def get_user_score(request, username):
-    comments_data = fetch_instagram_comments(username)
+def get_user_score_instagram(request, username):
+    comments_data = []
+
+    # Specify the folder path
+    folder_path = "C:\\Users\\sahoo\\development__purpose"
+
+    # Read text files (.txt)
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".txt"):
+            with open(os.path.join(folder_path, filename), "r") as file:
+                text = file.read()
+                comments_data.append({"text": text})
+
+    # Read JSON files (.json)
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".json"):
+            with open(os.path.join(folder_path, filename), "r") as file:
+                json_data = json.load(file)
+                for item in json_data:
+                    if "text" in item:
+                        comments_data.append({"text": item["text"]})
 
     # Analyze comments and calculate score
     comment_scores = [
         analyze_comment(comment_data.get("text", "")) for comment_data in comments_data
     ]
     average_comment_score = sum(comment_scores) / len(comment_scores)
-    score = 10.0 - average_comment_score
+    new_score = 10.0 - average_comment_score
 
-    # Store comments and their associated scores in the database
-    user_profile, _ = UserProfile.objects.get_or_create(username=username)
+    # Retrieve the user's existing profile
+    user_profile, created = UserProfile.objects.get_or_create(username=username)
+    if created or new_score < user_profile.score:
+        user_profile.score = new_score
+        user_profile.save()
 
-    for comment_data, comment_score in zip(comments_data, comment_scores):
-        comment_text = comment_data.get("text", "")
-        username = comment_data.get("username", "")
-
-        # Create a new UserComment instance with individual scores
-        UserComment.objects.create(
-            user=user_profile,
-            comment_text=comment_text,
-            username=username,
-            score=comment_score,
-        )
-
-    # Update the user's profile score
-    user_profile.score = score
-    user_profile.save()
-
-    # Return the calculated score
-    return Response({"message": "Score calculated successfully", "score": score})
-
-
-@api_view(["GET"])
-def get_user_comments(request, username):
-    # Fetch all comments for the specified username
-    user_comments = UserComment.objects.filter(user__username=username)
-
-    # Use a serializer to transform the QuerySet into JSON
-    serializer = CommentDetailSerializer(user_comments, many=True)
-    return Response(
-        {"message": "Comments fetched successfully", "comments": serializer.data}
-    )
+    return Response({"message": "Score calculated successfully", "score": new_score})
