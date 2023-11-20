@@ -9,6 +9,7 @@ const HomePage = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 height: "100vh",
+                fontFamily: 'Arial, sans-serif',
             }}>
             <h1>Sentiment Analysis Platform</h1>
             <div style={{ margin: "20px" }}>

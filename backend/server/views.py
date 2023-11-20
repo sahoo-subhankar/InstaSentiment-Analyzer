@@ -4,6 +4,11 @@ import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .comment_analysis import analyze_comment
+from .comment_data_statistics import (
+    analyze_positive_comment,
+    analyze_negetive_comment,
+    count_total_words,
+)
 from .models import UserProfile
 
 
@@ -62,10 +67,42 @@ def get_user_score_instagram(request, username):
     average_comment_score = sum(comment_scores) / len(comment_scores)
     new_score = 10.0 - average_comment_score
 
+    # Analyze comments and calculate positive words score
+    positive_comment_scores = [
+        analyze_positive_comment(comment_data.get("text", ""))
+        for comment_data in comments_data
+    ]
+    positive_comment_score = sum(positive_comment_scores)
+
+    # Analyze comments and calculate negetive words score
+    negetive_comment_scores = [
+        analyze_negetive_comment(comment_data.get("text", ""))
+        for comment_data in comments_data
+    ]
+    negetive_comment_score = sum(negetive_comment_scores)
+
+    # Analyze comments and calculate total words score
+    total_comment_scores = [
+        count_total_words(comment_data.get("text", ""))
+        for comment_data in comments_data
+    ]
+    total_comment_score = sum(total_comment_scores)
+    neutral_comment_score = total_comment_score - (
+        positive_comment_score + negetive_comment_score
+    )
+
     # Retrieve the user's existing profile
     user_profile, created = UserProfile.objects.get_or_create(username=username)
     if created or new_score < user_profile.score:
         user_profile.score = new_score
         user_profile.save()
 
-    return Response({"message": "Score calculated successfully", "score": new_score})
+    return Response(
+        {
+            "message": "Score calculated successfully",
+            "score": new_score,
+            "pos_score": positive_comment_score,
+            "neg_score": negetive_comment_score,
+            "neu_score": neutral_comment_score,
+        }
+    )
