@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from .comment_analysis import analyze_comment
 from .models import UserProfile
 
-
 @api_view(["GET"])
 def get_user_score_instagram(request, username):
     # Run the instaloader command
