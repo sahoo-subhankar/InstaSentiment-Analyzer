@@ -46,12 +46,10 @@ const InstagramPage = () => {
         justifyContent: 'center',
         height: '100vh',
         fontFamily: 'Arial, sans-serif',
-      }}
-    >
+      }}>
       <h1 style={{ marginBottom: '5px' }}>Instagram Comments & Captions Sentiment Analyzer</h1>
 
       {dataFetched ? (
-        // If data is fetched, show the message, score, and chart
         <>
           {message !== '' && <p style={{ margin: '10px', color: '#333' }}>{message}</p>}
           {score !== null && (
@@ -79,7 +77,6 @@ const InstagramPage = () => {
           </div>
         </>
       ) : (
-        // If data is not fetched, show the input, label, and button
         <>
           <div style={{ margin: '20px' }}>
             <label htmlFor="username">Enter Instagram Username: </label>
