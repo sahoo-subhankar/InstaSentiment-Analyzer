@@ -1,5 +1,6 @@
 import os
 import json
+import subprocess
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .comment_analysis import analyze_comment
@@ -8,10 +9,25 @@ from .models import UserProfile
 
 @api_view(["GET"])
 def get_user_score_instagram(request, username):
+    # Run the instaloader command
+    instaloader_command = f'instaloader --comments --filename-pattern "{{shortcode}}_{{date_utc}}_UTC" --no-videos --no-video-thumbnails --no-pictures --no-metadata-json --no-compress-json --no-profile-pic --login=sahoo__subha --dirname-pattern "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instaloader Files\\{{profile}}" profile {username}'
+
+    try:
+        # Run the command using subprocess
+        subprocess.run(instaloader_command, shell=True, check=True)
+    except subprocess.CalledProcessError as e:
+        return Response(
+            {"message": f"Error running instaloader command: {e}", "score": 0.0}
+        )
+
+    # used to store comments
     comments_data = []
 
-    # Specify the folder path
-    folder_path = "C:\\Users\\sahoo\\development__purpose"
+    # Specify the folder path with the dynamic username
+    folder_path = os.path.join(
+        "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instaloader Files",
+        username,
+    )
 
     # Read text files (.txt)
     for filename in os.listdir(folder_path):
