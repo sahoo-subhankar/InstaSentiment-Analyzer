@@ -7,3 +7,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class ScoreHistory(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    score = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user_profile.username} - {self.score} - {self.timestamp}"

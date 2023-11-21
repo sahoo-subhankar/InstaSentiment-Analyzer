@@ -13,6 +13,7 @@ const InstagramPage = () => {
   const [dataFetched, setDataFetched] = useState(false);
   const [email, setEmail] = useState('');
   const [email_message, setEmail_message] = useState('');
+  const [scoreHistory, setScoreHistory] = useState([]);
 
   const handleFetchScore = async () => {
     if (username === '' | email === '') {
@@ -31,6 +32,7 @@ const InstagramPage = () => {
         setPos_score(response.data.pos_score);
         setNeg_score(response.data.neg_score);
         setNeu_score(response.data.neu_score);
+        setScoreHistory(response.data.score_history);
         setDataFetched(true);
       }
     } catch (error) {
@@ -60,23 +62,54 @@ const InstagramPage = () => {
               Score of {username} is: <b>{score}</b>
             </p>
           )}
-          <div>
-            <Chart
-              chartType="PieChart"
-              data={[
-                ['Sentiment', 'Percentage'],
-                ['Positive Words', pos_score],
-                ['Negative Words', neg_score],
-                ['Neutral Words', neu_score],
-              ]}
-              options={{
-                title: 'Sentiment Analysis 3D Pie Chart',
-                is3D: true,
-                backgroundColor: 'transparent',
-              }}
-              width={'120%'}
-              height={'500px'}
-            />
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}>
+            <div>
+              <Chart
+                chartType="PieChart"
+                data={[
+                  ['Sentiment', 'Percentage'],
+                  ['Positive Words', pos_score],
+                  ['Negative Words', neg_score],
+                  ['Neutral Words', neu_score],
+                ]}
+                options={{
+                  title: 'Sentiment Analysis 3D Pie Chart',
+                  is3D: true,
+                  backgroundColor: 'transparent',
+                }}
+                width={'120%'}
+                height={'500px'}
+              />
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <Chart
+                chartType="LineChart"
+                data={[
+                  ["Timestamp", "Score"],
+                  ...scoreHistory.map(entry => [new Date(entry.timestamp).toLocaleString(), entry.score])
+                ]}
+                options={{
+                  title: 'Profile Score Update Line Chart',
+                  hAxis: {
+                    title: "Timestamp",
+                  },
+                  vAxis: {
+                    title: "Score",
+                  },
+                  series: {
+                    1: { curveType: "function" },
+                  },
+                  is3D: true,
+                  backgroundColor: 'transparent',
+                }}
+                width="100%"
+                height="400px"
+              />
+            </div>
           </div>
         </>
       ) : (
