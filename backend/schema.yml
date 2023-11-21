@@ -1,0 +1,38 @@
+openapi: 3.0.3
+info:
+  title: Sentiment Analyzer API
+  version: 1.0.0
+  description: Analyze comments and captions for instagram profile
+paths:
+  /api/get_user_score_instagram/{username}/{email}/:
+    get:
+      operationId: api_get_user_score_instagram_retrieve
+      parameters:
+      - in: path
+        name: email
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
