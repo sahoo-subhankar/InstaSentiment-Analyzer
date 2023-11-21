@@ -11,20 +11,23 @@ const InstagramPage = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
+  const [email, setEmail] = useState('');
+  const [email_message, setEmail_message] = useState('');
 
   const handleFetchScore = async () => {
-    if (username === '') {
+    if (username === '' | email === '') {
       alert('Please fill up all the inputs');
       return;
     }
 
     try {
       setLoading(true);
-      const response = await axios.get(`http://127.0.0.1:8000/api/get_user_score_instagram/${username}`);
+      const response = await axios.get(`http://127.0.0.1:8000/api/get_user_score_instagram/${username}/${email}`);
 
       if (response.status === 200) {
         setScore(response.data.score);
         setMessage(response.data.message);
+        setEmail_message(response.data.email_message);
         setPos_score(response.data.pos_score);
         setNeg_score(response.data.neg_score);
         setNeu_score(response.data.neu_score);
@@ -51,7 +54,7 @@ const InstagramPage = () => {
 
       {dataFetched ? (
         <>
-          {message !== '' && <p style={{ margin: '10px', color: '#333' }}>{message}</p>}
+          {message !== '' && email_message !== '' && <p style={{ margin: '10px', color: '#333' }}>{message} & {email_message}</p>}
           {score !== null && (
             <p style={{ margin: '10px', color: '#333' }}>
               Score of {username} is: <b>{score}</b>
@@ -62,9 +65,9 @@ const InstagramPage = () => {
               chartType="PieChart"
               data={[
                 ['Sentiment', 'Percentage'],
-                ['Positive', pos_score],
-                ['Negative', neg_score],
-                ['Neutral', neu_score],
+                ['Positive Words', pos_score],
+                ['Negative Words', neg_score],
+                ['Neutral Words', neu_score],
               ]}
               options={{
                 title: 'Sentiment Analysis 3D Pie Chart',
@@ -85,6 +88,18 @@ const InstagramPage = () => {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="off"
+              style={{ marginLeft: '10px', padding: '5px' }}
+            />
+          </div>
+
+          <div style={{ margin: '20px' }}>
+            <label htmlFor="email">Enter Your Email Address: </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
               style={{ marginLeft: '10px', padding: '5px' }}
             />
