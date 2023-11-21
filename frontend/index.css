@@ -2,5 +2,6 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    /* background-color: #212121; */
     background: linear-gradient(15deg, #880088, #aa2068, #cc3f47, #de6f3d, #f09f33, #de6f3d, #cc3f47, #aa2068, #880088) no-repeat;
 }

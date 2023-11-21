@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Chart } from 'react-google-charts';
+import './style.css'; 
 
 const InstagramPage = () => {
   const [username, setUsername] = useState('');
@@ -52,11 +53,12 @@ const InstagramPage = () => {
         height: '100vh',
         fontFamily: 'Arial, sans-serif',
       }}>
-      <h1 style={{ marginBottom: '5px' }}>Instagram Comments & Captions Sentiment Analyzer</h1>
+
+      <h1 style={{ marginBottom: '20px' }}><b>Instagram Comments & Captions Sentiment Analyzer</b></h1>
 
       {dataFetched ? (
         <>
-          {message !== '' && email_message !== '' && <p style={{ margin: '10px', color: '#333' }}>{message} & {email_message}</p>}
+          {message !== '' && email_message !== '' && <p style={{ margin: '10px', color: '#333' }}><i>{message} & {email_message}</i></p>}
           {score !== null && (
             <p style={{ margin: '10px', color: '#333' }}>
               Score of {username} is: <b>{score}</b>
@@ -114,8 +116,8 @@ const InstagramPage = () => {
         </>
       ) : (
         <>
-          <div style={{ margin: '20px' }}>
-            <label htmlFor="username">Enter Instagram Username: </label>
+          <div style={{ margin: '10px' }}>
+              <label htmlFor="username"><b>Enter Instagram Username: </b></label>
             <input
               type="text"
               id="username"
@@ -126,8 +128,8 @@ const InstagramPage = () => {
             />
           </div>
 
-          <div style={{ margin: '20px' }}>
-            <label htmlFor="email">Enter Your Email Address: </label>
+          <div style={{ margin: '10px' }}>
+              <label htmlFor="email"><b>Enter Your Email Address: </b></label>
             <input
               type="email"
               id="email"
@@ -141,18 +143,11 @@ const InstagramPage = () => {
           {loading && <p style={{ margin: '10px', color: '#333' }}>Loading...</p>}
 
           <div style={{ margin: '10px' }}>
-            <button
-              onClick={handleFetchScore}
-              disabled={loading}
-              style={{
-                padding: '10px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-              }}>
-              Show Profile Score
+              <button className="btn_x" onClick={handleFetchScore} disabled={loading}>
+              <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1" className="sparkle">
+                <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
+              </svg>
+              <span className="text">Show Profile Score</span>
             </button>
           </div>
         </>

@@ -1,0 +1,113 @@
+/* style for the first title */
+.btn {
+    margin-bottom: 100px;
+    height: auto;
+    background: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn {
+    --border-right: 6px;
+    --text-stroke-color: rgba(255, 255, 255, 0.6);
+    --animation-color: black;
+    --fs-size: 2em;
+    letter-spacing: 3px;
+    text-decoration: none;
+    font-size: var(--fs-size);
+    font-family: "Arial";
+    position: relative;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-stroke-color);
+}
+
+.hover-text {
+    position: absolute;
+    box-sizing: border-box;
+    content: "";
+    color: var(--animation-color);
+    width: 0%;
+    inset: 0;
+    border-right: var(--border-right) solid var(--animation-color);
+    overflow: hidden;
+    transition: 0.5s;
+    -webkit-text-stroke: 1px var(--animation-color);
+    z-index: 1;
+}
+
+.btn:hover .hover-text {
+    width: 100%;
+    filter: drop-shadow(0 0 23px var(--animation-color))
+}
+
+
+/* style for the first two buttons */
+.btn1 {
+    background-image: linear-gradient(90deg, #53cbef 0%, #dcc66c 50%, #ffa3b6 75%, #53cbef 100%);
+    animation: slidernbw 2s linear infinite;
+    color: #000;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+    text-decoration: none;
+    margin-bottom: 100px;
+}
+
+@keyframes slidernbw {
+    to {
+        background-position: 20vw;
+    }
+}
+
+
+/* show profile score button */
+.btn_x {
+    border: none;
+    width: 15em;
+    height: 4em;
+    border-radius: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: #1C1A1C;
+    cursor: pointer;
+    transition: all 450ms ease-in-out;
+}
+
+.sparkle {
+    fill: #AAAAAA;
+    transition: all 800ms ease;
+}
+
+.text {
+    font-weight: 600;
+    color: #AAAAAA;
+    font-size: medium;
+}
+
+.btn_x:hover {
+    background: linear-gradient(0deg, #A47CF3, #683FEA);
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+        inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
+        0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+        0px 0px 180px 0px #9917FF;
+    transform: translateY(-2px);
+}
+
+.btn_x:hover .text {
+    color: white;
+}
+
+.btn_x:hover .sparkle {
+    fill: white;
+    transform: scale(1.2);
+}

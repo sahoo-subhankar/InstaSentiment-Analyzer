@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import './style.css'; 
 
 const HomePage = () => {
     return (
@@ -11,9 +14,17 @@ const HomePage = () => {
                 height: "100vh",
                 fontFamily: 'Arial, sans-serif',
             }}>
-            <h1>Sentiment Analysis Platform</h1>
+
+            <button className="btn" data-text="Awesome">
+                <span className="actual-text">&nbsp;Sentiment Analysis Platform&nbsp;</span>
+                <span aria-hidden="true" className="hover-text">&nbsp;Sentiment Analysis Platform &nbsp;</span>
+            </button>
+        
             <div style={{ margin: "20px" }}>
-                <Link to="/instagram">Instagram</Link>
+                <Link to="/instagram" className="btn1">
+                    Instagram Sentiment Analyzer
+                    <FontAwesomeIcon icon={faArrowRight} style={{ marginLeft: '5px' }} />
+                </Link>
             </div>
         </div>
     );
