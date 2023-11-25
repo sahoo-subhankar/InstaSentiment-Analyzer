@@ -54,14 +54,14 @@ const InstagramPage = () => {
         fontFamily: 'Arial, sans-serif',
       }}>
 
-      <h1 style={{ marginBottom: '20px' }}><b>Instagram Comments & Captions Sentiment Analyzer</b></h1>
+      <h1 style={{ marginBottom: '16px' }}><b>Instagram Comments & Captions Sentiment Analyzer</b></h1>
 
       {dataFetched ? (
         <>
-          {message !== '' && email_message !== '' && <p style={{ margin: '10px', color: '#333' }}><i>{message} & {email_message}</i></p>}
+          {message !== '' && email_message !== '' && <p style={{ margin: '10px', color: '#333' }}><b>{message}</b> & <b>{email_message}</b></p>}
           {score !== null && (
             <p style={{ margin: '10px', color: '#333' }}>
-              Score of {username} is: <b>{score}</b>
+              calculated score of {username}: <b>{score}</b>
             </p>
           )}
           <div style={{

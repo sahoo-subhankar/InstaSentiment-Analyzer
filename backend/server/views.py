@@ -39,7 +39,7 @@ def get_user_score_instagram(request, username, email):
     instaloader_command = f'instaloader --comments --filename-pattern "{{shortcode}}_{{date_utc}}_UTC" --no-videos --no-video-thumbnails --no-pictures --no-metadata-json --no-compress-json --no-profile-pic --login=sahoo__subha --dirname-pattern "C:\\Users\\sahoo\\OneDrive\\Documents\\Projects\\InstaSentiment Analyzer\\InstaSentiment-Analyzer\\backend\\Instagram Scraped Files\\{{profile}}" profile {username}'
 
     try:
-        # Run the command using subprocess
+        # Run the command using subprocess.....Exception Handling
         subprocess.run(instaloader_command, shell=True, check=True)
     except subprocess.CalledProcessError as e:
         return Response(
